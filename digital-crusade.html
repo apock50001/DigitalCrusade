@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Crusade – Human Intelligence First</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;0,500;0,700;1,400;1,500&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black:    #0a0a0b;
+    --deep:     #111114;
+    --panel:    #17171c;
+    --border:   #2a2a35;
+    --crimson:  #9b1a1a;
+    --crimson2: #c0392b;
+    --gold:     #c8a84b;
+    --silver:   #a0a0b0;
+    --light:    #d8d8e8;
+    --white:    #f0f0f5;
+    --mono:     'Share Tech Mono', monospace;
+    --serif:    'Cinzel', serif;
+    --display:  'Cinzel Decorative', cursive;
+    --body:     'EB Garamond', serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--light);
+    font-family: var(--body);
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── PAGES ── */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(10,10,11,0.96);
+    border-bottom: 1px solid var(--crimson);
+    backdrop-filter: blur(8px);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .nav-brand {
+    font-family: var(--display);
+    font-size: 1rem;
+    color: var(--gold);
+    letter-spacing: 0.12em;
+    cursor: pointer;
+    display: flex; align-items: center; gap: 0.6rem;
+  }
+  .nav-brand .cross { color: var(--crimson); font-size: 1.2rem; }
+  .nav-links { display: flex; gap: 0; list-style: none; }
+  .nav-links li a {
+    display: block; padding: 0 1.1rem; height: 64px; line-height: 64px;
+    font-family: var(--serif); font-size: 0.72rem; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--silver);
+    text-decoration: none; cursor: pointer;
+    transition: color 0.2s, background 0.2s;
+    border-left: 1px solid transparent;
+  }
+  .nav-links li a:hover, .nav-links li a.active {
+    color: var(--gold); background: rgba(155,26,26,0.12);
+    border-left-color: var(--crimson);
+  }
+  .nav-links li:last-child a { color: var(--crimson); }
+  .nav-links li:last-child a:hover { color: #ff4444; background: rgba(155,26,26,0.25); }
+  .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+  .hamburger span { display: block; width: 24px; height: 2px; background: var(--silver); }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh; padding-top: 64px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    position: relative; overflow: hidden; text-align: center;
+    background: radial-gradient(ellipse at 50% 60%, #1c0505 0%, var(--black) 65%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; opacity: 0.06;
+    background-image:
+      linear-gradient(rgba(155,26,26,0.6) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(155,26,26,0.6) 1px, transparent 1px);
+    background-size: 48px 48px;
+    animation: gridPulse 8s ease-in-out infinite;
+  }
+  @keyframes gridPulse { 0%,100%{opacity:0.06} 50%{opacity:0.12} }
+
+  .hero-cross {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    width: 600px; height: 600px; opacity: 0.04;
+    pointer-events: none;
+  }
+  .hero-cross::before, .hero-cross::after {
+    content: ''; position: absolute; background: var(--crimson); border-radius: 4px;
+  }
+  .hero-cross::before { width: 60px; height: 100%; left: 50%; transform: translateX(-50%); }
+  .hero-cross::after  { width: 100%; height: 60px; top: 28%; left: 0; }
+
+  .hero-content { position: relative; z-index: 2; padding: 2rem; max-width: 900px; }
+  .hero-eyebrow {
+    font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.35em;
+    color: var(--crimson2); text-transform: uppercase;
+    margin-bottom: 1.5rem;
+    display: flex; align-items: center; justify-content: center; gap: 1rem;
+  }
+  .hero-eyebrow::before, .hero-eyebrow::after {
+    content: ''; display: block; width: 60px; height: 1px; background: var(--crimson);
+  }
+  h1.hero-title {
+    font-family: var(--display); font-size: clamp(2.8rem, 8vw, 6rem);
+    font-weight: 900; color: var(--white); letter-spacing: 0.06em;
+    line-height: 1.05;
+    text-shadow: 0 0 60px rgba(155,26,26,0.5), 0 2px 4px rgba(0,0,0,0.8);
+    margin-bottom: 0.3em;
+  }
+  h1.hero-title span { color: var(--crimson2); }
+  .hero-subtitle {
+    font-family: var(--body); font-style: italic;
+    font-size: clamp(1rem, 2.5vw, 1.35rem);
+    color: var(--silver); margin: 0 auto 2.5rem;
+    max-width: 620px; letter-spacing: 0.03em;
+  }
+  .hero-divider {
+    display: flex; align-items: center; justify-content: center; gap: 1.2rem;
+    margin-bottom: 2.5rem; color: var(--crimson); font-size: 1.4rem;
+  }
+  .hero-divider::before, .hero-divider::after {
+    content: ''; display: block; width: 100px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--crimson));
+  }
+  .hero-divider::after { transform: scaleX(-1); }
+  .hero-buttons { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+  .btn {
+    font-family: var(--serif); font-size: 0.72rem; letter-spacing: 0.2em;
+    text-transform: uppercase; padding: 0.85rem 2rem;
+    border: 1px solid; cursor: pointer; text-decoration: none;
+    transition: all 0.25s; display: inline-block;
+  }
+  .btn-primary {
+    background: var(--crimson); border-color: var(--crimson2); color: var(--white);
+  }
+  .btn-primary:hover { background: var(--crimson2); box-shadow: 0 0 24px rgba(192,57,43,0.5); }
+  .btn-outline {
+    background: transparent; border-color: var(--silver); color: var(--silver);
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold); }
+  .btn-ghost {
+    background: transparent; border-color: var(--border); color: var(--silver);
+  }
+  .btn-ghost:hover { border-color: var(--crimson); color: var(--crimson2); }
+
+  /* ── SECTION HUB ── */
+  .hub { padding: 80px 2rem; max-width: 1200px; margin: 0 auto; }
+  .hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; margin-top: 3rem; }
+  .hub-card {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 2.5rem; position: relative; overflow: hidden;
+    transition: border-color 0.3s; cursor: pointer;
+  }
+  .hub-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: var(--crimson); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.3s;
+  }
+  .hub-card:hover { border-color: var(--crimson); }
+  .hub-card:hover::before { transform: scaleX(1); }
+  .hub-card-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .hub-card h3 {
+    font-family: var(--serif); font-size: 1.1rem; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+  }
+  .hub-card p { color: var(--silver); font-size: 0.95rem; line-height: 1.6; }
+  .hub-card .card-link {
+    display: inline-block; margin-top: 1.5rem;
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em;
+    color: var(--crimson2); text-transform: uppercase;
+  }
+  .hub-card:hover .card-link { color: var(--gold); }
+
+  /* ── PAGE HEADER ── */
+  .page-header {
+    padding: 120px 2rem 60px; text-align: center;
+    background: linear-gradient(to bottom, rgba(155,26,26,0.07), transparent);
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .page-header::before {
+    content: attr(data-label);
+    position: absolute; top: 80px; left: 50%; transform: translateX(-50%);
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.4em;
+    color: var(--crimson); text-transform: uppercase; opacity: 0.8;
+  }
+  h2.page-title {
+    font-family: var(--display); font-size: clamp(2rem, 5vw, 3.5rem);
+    color: var(--white); letter-spacing: 0.08em;
+    text-shadow: 0 0 40px rgba(155,26,26,0.3);
+  }
+  .page-subtitle {
+    font-style: italic; color: var(--silver); font-size: 1.1rem;
+    max-width: 600px; margin: 0.8rem auto 0;
+  }
+
+  /* ── SECTION TITLES ── */
+  .section-title {
+    font-family: var(--serif); font-size: 1.5rem; font-weight: 700;
+    color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase;
+    display: flex; align-items: center; gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+  .section-title::after {
+    content: ''; flex: 1; height: 1px; background: var(--border); max-width: 200px;
+  }
+
+  /* ── PORTFOLIO PAGE ── */
+  .portfolio-container { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+  .portfolio-tabs {
+    display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 3rem;
+    border-bottom: 1px solid var(--border); padding-bottom: 1rem;
+  }
+  .tab-btn {
+    font-family: var(--serif); font-size: 0.68rem; letter-spacing: 0.2em;
+    text-transform: uppercase; padding: 0.6rem 1.2rem;
+    background: transparent; border: 1px solid var(--border);
+    color: var(--silver); cursor: pointer; transition: all 0.2s;
+  }
+  .tab-btn:hover, .tab-btn.active {
+    background: var(--crimson); border-color: var(--crimson); color: var(--white);
+  }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
+  .article-card {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 2rem; margin-bottom: 1.5rem;
+    position: relative;
+  }
+  .article-card::before {
+    content: '✠'; position: absolute; top: 1.5rem; right: 1.5rem;
+    color: var(--crimson); opacity: 0.4; font-size: 1.2rem;
+  }
+  .article-card h3 {
+    font-family: var(--serif); font-size: 1.15rem; font-weight: 700;
+    color: var(--white); margin-bottom: 0.6rem; letter-spacing: 0.04em;
+  }
+  .article-card p { color: var(--silver); font-size: 0.95rem; line-height: 1.7; }
+  .article-card ul {
+    margin: 0.8rem 0 0 1.2rem; color: var(--silver); font-size: 0.95rem;
+    line-height: 1.9;
+  }
+  .article-card ul li::marker { color: var(--crimson); }
+
+  .quote-block {
+    border-left: 3px solid var(--crimson); padding: 1.5rem 2rem;
+    margin: 2rem 0; background: rgba(155,26,26,0.07);
+    font-style: italic; font-size: 1.15rem; color: var(--light);
+  }
+  .quote-block cite {
+    display: block; margin-top: 0.5rem;
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em;
+    color: var(--silver); font-style: normal;
+  }
+
+  /* ── FIGHT BACK PAGE ── */
+  .fightback-container { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
+  .fightback-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 2rem;
+  }
+  .fightback-card {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 2rem; position: relative; overflow: hidden;
+  }
+  .fightback-card::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--crimson), transparent);
+  }
+  .fightback-card h3 {
+    font-family: var(--serif); font-size: 1rem; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--gold); margin-bottom: 1rem;
+    padding-left: 1.5rem; position: relative;
+  }
+  .fightback-card h3::before {
+    content: '✠'; position: absolute; left: 0; color: var(--crimson); font-size: 0.9rem;
+  }
+  .fightback-card ul { list-style: none; color: var(--silver); font-size: 0.95rem; }
+  .fightback-card ul li { padding: 0.35rem 0; padding-left: 1.2rem; position: relative; }
+  .fightback-card ul li::before { content: '›'; position: absolute; left: 0; color: var(--crimson2); }
+
+  /* ── NEWS PAGE ── */
+  .news-container { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+  .news-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 2rem; }
+  .news-main article {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 2rem; margin-bottom: 1.5rem;
+  }
+  .news-tag {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--crimson2);
+    margin-bottom: 0.5rem; display: block;
+  }
+  .news-main article h3 {
+    font-family: var(--serif); font-size: 1.2rem; font-weight: 700;
+    color: var(--white); margin-bottom: 0.6rem; letter-spacing: 0.03em;
+  }
+  .news-meta {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em;
+    color: var(--border); text-transform: uppercase; margin-bottom: 0.8rem;
+    padding-bottom: 0.8rem; border-bottom: 1px solid var(--border);
+  }
+  .news-main article p { color: var(--silver); font-size: 0.95rem; line-height: 1.7; }
+  .news-sidebar { }
+  .sidebar-section {
+    background: var(--panel); border: 1px solid var(--border);
+    padding: 1.5rem; margin-bottom: 1.5rem;
+  }
+  .sidebar-section h4 {
+    font-family: var(--serif); font-size: 0.75rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--gold);
+    border-bottom: 1px solid var(--border); padding-bottom: 0.7rem; margin-bottom: 1rem;
+  }
+  .sidebar-item {
+    padding: 0.6rem 0; border-bottom: 1px solid rgba(42,42,53,0.5);
+    font-size: 0.88rem; color: var(--silver);
+  }
+  .sidebar-item:last-child { border-bottom: none; }
+  .sidebar-item .date { font-family: var(--mono); font-size: 0.65rem; color: var(--crimson2); display: block; margin-top: 0.2rem; }
+
+  /* ── DONATE ERROR ── */
+  .donate-page {
+    min-height: calc(100vh - 64px); padding-top: 64px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 120px 2rem 60px;
+  }
+  .error-code {
+    font-family: var(--mono); font-size: clamp(4rem, 15vw, 10rem);
+    color: var(--crimson); line-height: 1; opacity: 0.7;
+    text-shadow: 0 0 60px rgba(155,26,26,0.4);
+  }
+  .error-title {
+    font-family: var(--display); font-size: clamp(1.5rem, 4vw, 2.5rem);
+    color: var(--white); margin: 1rem 0;
+  }
+  .error-subtitle {
+    font-family: var(--mono); font-size: 0.9rem; color: var(--silver);
+    letter-spacing: 0.1em; margin-bottom: 1.5rem;
+    border: 1px solid var(--border); padding: 1rem 2rem; display: inline-block;
+  }
+  .error-humor { font-style: italic; color: var(--silver); font-size: 1rem; max-width: 480px; }
+
+  /* ── SECTION LABEL STRIP ── */
+  .label-strip {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.35em;
+    text-transform: uppercase; color: var(--crimson); opacity: 0.7;
+    text-align: center; padding: 1.2rem; border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center; gap: 2rem;
+  }
+  .label-strip::before, .label-strip::after {
+    content: '⸺'; opacity: 0.4;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--deep); border-top: 1px solid var(--crimson);
+    padding: 3rem 2rem 1.5rem;
+  }
+  .footer-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 3rem;
+    padding-bottom: 2rem; border-bottom: 1px solid var(--border);
+  }
+  .footer-brand h3 {
+    font-family: var(--display); font-size: 1.2rem; color: var(--gold);
+    margin-bottom: 0.5rem; letter-spacing: 0.1em;
+  }
+  .footer-brand p { color: var(--silver); font-size: 0.9rem; margin-bottom: 1rem; }
+  .newsletter-row { display: flex; gap: 0; }
+  .newsletter-row input {
+    flex: 1; background: var(--panel); border: 1px solid var(--border);
+    border-right: none; color: var(--light); padding: 0.6rem 0.8rem;
+    font-family: var(--body); font-size: 0.85rem; outline: none;
+  }
+  .newsletter-row input::placeholder { color: var(--border); }
+  .newsletter-row button {
+    background: var(--crimson); border: 1px solid var(--crimson2); color: var(--white);
+    padding: 0.6rem 1rem; cursor: pointer; font-family: var(--mono); font-size: 0.65rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    transition: background 0.2s;
+  }
+  .newsletter-row button:hover { background: var(--crimson2); }
+  .footer-col h4 {
+    font-family: var(--serif); font-size: 0.7rem; letter-spacing: 0.25em;
+    text-transform: uppercase; color: var(--gold);
+    padding-bottom: 0.6rem; border-bottom: 1px solid var(--border);
+    margin-bottom: 0.8rem;
+  }
+  .footer-col ul { list-style: none; }
+  .footer-col ul li { margin-bottom: 0.4rem; }
+  .footer-col ul li a {
+    color: var(--silver); font-size: 0.85rem; cursor: pointer;
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: var(--gold); }
+  .social-links { display: flex; gap: 0.8rem; margin-top: 0.5rem; }
+  .social-links a {
+    width: 34px; height: 34px; border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--silver); font-size: 0.75rem; cursor: pointer;
+    text-decoration: none; transition: all 0.2s; font-family: var(--mono);
+    letter-spacing: 0;
+  }
+  .social-links a:hover { border-color: var(--crimson); color: var(--crimson2); }
+  .footer-bottom {
+    max-width: 1100px; margin: 1.5rem auto 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.15em;
+    color: var(--border);
+  }
+  .footer-motto { color: var(--crimson); }
+
+  /* ── SECTION wrapper ── */
+  .content-section { max-width: 1100px; margin: 0 auto; padding: 3rem 2rem; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 900px) {
+    .hub-grid { grid-template-columns: 1fr; }
+    .fightback-grid { grid-template-columns: 1fr; }
+    .news-grid { grid-template-columns: 1fr; }
+    .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .footer-bottom { flex-direction: column; gap: 0.5rem; text-align: center; }
+    .nav-links { display: none; flex-direction: column; position: fixed; top: 64px; left: 0; right: 0; background: var(--deep); border-bottom: 1px solid var(--crimson); }
+    .nav-links.open { display: flex; }
+    .nav-links li a { height: auto; line-height: 1; padding: 1rem 2rem; border-left: none; border-bottom: 1px solid var(--border); }
+    .hamburger { display: flex; }
+  }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--crimson); padding: 0.4rem 0; overflow: hidden;
+    white-space: nowrap; font-family: var(--mono); font-size: 0.7rem;
+    letter-spacing: 0.15em; color: rgba(255,255,255,0.9);
+  }
+  .ticker-inner {
+    display: inline-block;
+    animation: ticker 30s linear infinite;
+  }
+  @keyframes ticker {
+    from { transform: translateX(100vw); }
+    to   { transform: translateX(-100%); }
+  }
+
+  /* ── STAT BAR ── */
+  .stat-bar {
+    background: var(--panel); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    padding: 2rem;
+    display: grid; grid-template-columns: repeat(4,1fr); text-align: center;
+  }
+  .stat-item { padding: 1rem; border-right: 1px solid var(--border); }
+  .stat-item:last-child { border-right: none; }
+  .stat-num {
+    font-family: var(--display); font-size: 1.8rem; color: var(--crimson2); display: block;
+    line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--mono); font-size: 0.65rem; letter-spacing: 0.2em;
+    text-transform: uppercase; color: var(--silver); margin-top: 0.3rem; display: block;
+  }
+  @media (max-width: 600px) {
+    .stat-bar { grid-template-columns: repeat(2,1fr); }
+    .stat-item:nth-child(2) { border-right: none; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav id="mainNav">
+  <div class="nav-brand" onclick="showPage('home')">
+    <span class="cross">✠</span> Digital Crusade
+  </div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#" onclick="showPage('home')" id="nav-home" class="active">Home</a></li>
+    <li><a href="#" onclick="showPage('portfolio')" id="nav-portfolio">Portfolio</a></li>
+    <li><a href="#" onclick="showPage('fightback')" id="nav-fightback">How We Fight Back</a></li>
+    <li><a href="#" onclick="showPage('news')" id="nav-news">News</a></li>
+    <li><a href="#" onclick="showPage('donate')" id="nav-donate">Donate</a></li>
+  </ul>
+  <div class="hamburger" onclick="toggleMenu()" id="hamburger">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HOME PAGE
+══════════════════════════════════════ -->
+<div id="page-home" class="page active">
+
+  <section id="hero">
+    <div class="hero-grid"></div>
+    <div class="hero-cross"></div>
+    <div class="hero-content">
+      <div class="hero-eyebrow">Est. Anno Domini 2024</div>
+      <h1 class="hero-title"><span>Digital</span> Crusade</h1>
+      <div class="hero-divider">✠</div>
+      <p class="hero-subtitle">"Defending Human Intelligence in the Age of Artificial Machines."</p>
+      <div class="hero-buttons">
+        <button class="btn btn-primary" onclick="showPage('portfolio')">Explore the Portfolio</button>
+        <button class="btn btn-outline" onclick="showPage('fightback')">Join the Movement</button>
+        <button class="btn btn-ghost" onclick="showPage('news')">Latest News</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="ticker">
+    <span class="ticker-inner">
+      ✠ &nbsp; AI threatens human creativity &nbsp; ✠ &nbsp; Automation displaces workers &nbsp; ✠ &nbsp; Data centers consume more power than entire nations &nbsp; ✠ &nbsp; Human dignity cannot be reduced to algorithms &nbsp; ✠ &nbsp; Stand for human intelligence &nbsp; ✠ &nbsp; Resist the machine &nbsp; ✠ &nbsp; Education belongs to humanity &nbsp; ✠ &nbsp; Privacy is a human right &nbsp; ✠ &nbsp;
+    </span>
+  </div>
+
+  <div class="stat-bar">
+    <div class="stat-item">
+      <span class="stat-num">300M+</span>
+      <span class="stat-label">Jobs at Risk</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">1.7B</span>
+      <span class="stat-label">Litres of Water / Day</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">10×</span>
+      <span class="stat-label">Energy vs. Web Search</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">$1.8T</span>
+      <span class="stat-label">Wealth Concentrated</span>
+    </div>
+  </div>
+
+  <section class="hub">
+    <div class="label-strip">Our Mission Areas</div>
+    <div class="hub-grid">
+      <div class="hub-card" onclick="showPage('portfolio')">
+        <div class="hub-card-icon">⚔</div>
+        <h3>Portfolio</h3>
+        <p>Explore our research and arguments concerning the dangers of artificial intelligence — from ethics and education to economics and the environment.</p>
+        <span class="card-link">→ Read Research</span>
+      </div>
+      <div class="hub-card" onclick="showPage('fightback')">
+        <div class="hub-card-icon">✊</div>
+        <h3>Action & News</h3>
+        <p>Learn how we resist AI expansion — through public education, political advocacy, and grassroots campaigns that put people before profit.</p>
+        <span class="card-link">→ Take Action</span>
+      </div>
+      <div class="hub-card" onclick="showPage('donate')">
+        <div class="hub-card-icon">✠</div>
+        <h3>Support Us</h3>
+        <p>Fund the movement. Every contribution supports workshops, legal advocacy, and the people working to keep human creativity at the centre of society.</p>
+        <span class="card-link">→ Donate</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>✠ Digital Crusade</h3>
+        <p>A global movement defending human creativity, dignity, and intelligence from unchecked artificial intelligence.</p>
+        <div class="newsletter-row">
+          <input type="email" placeholder="your@email.com" />
+          <button>Subscribe</button>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a onclick="showPage('home')">Home</a></li>
+          <li><a onclick="showPage('portfolio')">Portfolio</a></li>
+          <li><a onclick="showPage('fightback')">How We Fight Back</a></li>
+          <li><a onclick="showPage('news')">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <div class="social-links">
+          <a title="Twitter/X">𝕏</a>
+          <a title="Facebook">f</a>
+          <a title="Instagram">◉</a>
+          <a title="YouTube">▶</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Digital Crusade. All rights reserved.</span>
+      <span class="footer-motto">✠ Human Intelligence First ✠</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     PORTFOLIO PAGE
+══════════════════════════════════════ -->
+<div id="page-portfolio" class="page">
+  <div class="page-header" data-label="Research & Arguments">
+    <h2 class="page-title">The Portfolio</h2>
+    <p class="page-subtitle">Our documented case against the unchecked advance of artificial intelligence.</p>
+  </div>
+
+  <div class="portfolio-container">
+    <div class="portfolio-tabs">
+      <button class="tab-btn active" onclick="showTab('ethics')">Religious & Ethics</button>
+      <button class="tab-btn" onclick="showTab('education')">AI in Schools</button>
+      <button class="tab-btn" onclick="showTab('economic')">Economic Damage</button>
+      <button class="tab-btn" onclick="showTab('environment')">Environmental Harm</button>
+    </div>
+
+    <!-- ETHICS TAB -->
+    <div class="tab-content active" id="tab-ethics">
+      <div class="section-title">Religious & Ethical Concerns</div>
+
+      <div class="article-card">
+        <h3>Human Dignity Must Not Be Reduced to Data</h3>
+        <p>Every human being possesses an irreducible dignity that cannot be captured, compressed, or replicated by any statistical model. When artificial intelligence systems are trained on human behaviour and output — our writing, our art, our medical records — they implicitly treat human experience as raw material. This reduction of the sacred to the quantifiable is not progress; it is a profound category error with lasting moral consequences.</p>
+      </div>
+
+      <div class="article-card">
+        <h3>AI Should Never Replace Human Moral Judgment</h3>
+        <p>Moral decision-making is not an optimisation problem. It requires conscience, context, lived experience, and genuine accountability. Systems designed to simulate ethical reasoning cannot bear moral responsibility — yet they are increasingly deployed in criminal sentencing, medical triage, and financial decisions that shape human lives. Delegating these judgments to machines represents a dangerous abdication of human responsibility.</p>
+        <ul>
+          <li>Algorithmic sentencing removes judicial discretion and humanity</li>
+          <li>Automated hiring denies applicants the right to be seen as full persons</li>
+          <li>AI medical advice removes the irreplaceable dimension of care</li>
+        </ul>
+      </div>
+
+      <div class="article-card">
+        <h3>Manipulation, Misinformation, and the Erosion of Truth</h3>
+        <p>The industrial-scale generation of synthetic content — convincing fabrications indistinguishable from genuine human expression — poses an existential threat to public discourse. AI-generated disinformation is not merely a technical problem; it is an assault on the conditions necessary for a functioning democracy and shared reality.</p>
+      </div>
+
+      <div class="article-card">
+        <h3>Power Concentration Among Technology Corporations</h3>
+        <p>A handful of corporations now control the infrastructure through which AI systems are built, deployed, and monetised. This concentration of power over transformative technology — in private, largely unaccountable hands — is antithetical to human flourishing and democratic governance. The Catholic Church, among many other voices, has called for AI to be developed for the common good, not private profit.</p>
+      </div>
+
+      <div class="quote-block">
+        "Technology should serve humanity, not replace it."
+        <cite>— Digital Crusade Manifesto, 2024</cite>
+      </div>
+    </div>
+
+    <!-- EDUCATION TAB -->
+    <div class="tab-content" id="tab-education">
+      <div class="section-title">Why AI Should Not Be Used in Education</div>
+
+      <div class="article-card">
+        <h3>The Destruction of Critical Thinking</h3>
+        <p>Education is not merely the transfer of information. It is the slow, difficult cultivation of the capacity to think — to analyse, question, synthesise, and judge. When AI systems provide instant answers, they short-circuit the very process that builds intellectual capability. Students who consult a language model for every essay prompt, every research question, and every mathematical challenge are being deprived of the cognitive struggle through which genuine understanding develops.</p>
+        <ul>
+          <li>Reduces engagement with difficult problems</li>
+          <li>Encourages surface-level rather than deep learning</li>
+          <li>Conditions students to accept generated answers uncritically</li>
+          <li>Undermines the habit of independent investigation</li>
+        </ul>
+      </div>
+
+      <div class="article-card">
+        <h3>Academic Dishonesty at Industrial Scale</h3>
+        <p>AI writing tools have made plagiarism effortless and undetectable. The integrity that academic institutions have built over centuries is being systematically dismantled. When a student submits AI-generated work as their own, they are not merely cheating — they are forfeiting the intellectual development that education is meant to provide.</p>
+      </div>
+
+      <div class="article-card">
+        <h3>The Atrophy of Writing as a Human Skill</h3>
+        <p>Writing is thinking made visible. The struggle to articulate a complex idea in clear prose is not incidental to education — it is central to it. As AI writing assistants become ubiquitous, students lose both the incentive and the practice to develop this foundational skill. The long-term consequence is a generation less able to express, argue, and persuade.</p>
+      </div>
+
+      <div class="article-card">
+        <h3>Long-Term Educational Consequences</h3>
+        <ul>
+          <li>Diminished problem-solving capacity across all disciplines</li>
+          <li>Shorter attention spans and reduced tolerance for difficulty</li>
+          <li>Declining intellectual curiosity and intrinsic motivation</li>
+          <li>Weaker interpersonal communication and oral reasoning</li>
+          <li>Generations less capable of sustained, independent thought</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ECONOMIC TAB -->
+    <div class="tab-content" id="tab-economic">
+      <div class="section-title">Economic Damage from AI Expansion</div>
+
+      <div class="article-card">
+        <h3>Automation and the Displacement of Workers</h3>
+        <p>Artificial intelligence does not merely assist workers — it replaces them. From customer service representatives to graphic designers, from paralegal researchers to radiologists, entire occupational categories are being made redundant faster than economies can create alternative employment. Goldman Sachs estimates that 300 million jobs globally are exposed to AI automation. The human costs of this displacement — financial insecurity, loss of purpose, community decline — are being treated as acceptable externalities in the pursuit of efficiency.</p>
+        <ul>
+          <li>Entry-level creative and knowledge-work positions disappearing first</li>
+          <li>Middle-skill workers face wage suppression from AI competition</li>
+          <li>Transition support and retraining absent from most AI deployment plans</li>
+        </ul>
+      </div>
+
+      <div class="article-card">
+        <h3>Unprecedented Wealth Concentration</h3>
+        <p>The productivity gains from artificial intelligence are not being distributed broadly. They are accruing overwhelmingly to the owners of AI systems and the corporations that deploy them. This dynamic — labour replaced by capital, with returns captured by capital — represents a structural acceleration of inequality. Small businesses, independent creators, and working people are subsidising, through their data and their displaced labour, the enrichment of a small technological elite.</p>
+      </div>
+
+      <div class="article-card">
+        <h3>The Devaluation of Human Creativity</h3>
+        <p>When AI systems can generate plausible music, images, and text at near-zero marginal cost, the market for human creative work is fundamentally disrupted. This is not merely an economic issue — it strikes at the meaning and value attributed to human creative endeavour. A culture that can manufacture art without artists, stories without storytellers, and music without musicians is a culture that has confused production with creation.</p>
+      </div>
+    </div>
+
+    <!-- ENVIRONMENT TAB -->
+    <div class="tab-content" id="tab-environment">
+      <div class="section-title">Environmental Damage from AI Infrastructure</div>
+
+      <div class="article-card">
+        <h3>The Hidden Energy Cost of Every AI Query</h3>
+        <p>A single query to a large language model consumes approximately ten times more energy than a standard web search. As AI tools are integrated into every digital interaction — search, communication, productivity software, customer service — the aggregate energy demand is staggering. Data centres supporting AI workloads are projected to account for a growing fraction of global electricity consumption, straining grids and driving demand for fossil fuels in regions with insufficient renewable capacity.</p>
+        <ul>
+          <li>Training a single large AI model emits hundreds of tonnes of CO₂</li>
+          <li>AI inference (ongoing use) multiplies this by millions of daily queries</li>
+          <li>Grid demand from AI is reversing progress on decarbonisation in some regions</li>
+        </ul>
+      </div>
+
+      <div class="article-card">
+        <h3>Water: The Invisible Resource Crisis</h3>
+        <p>AI data centres require enormous quantities of water for cooling. Microsoft's own disclosures indicate its global water consumption increased by 34% in a single year, driven largely by AI infrastructure. In water-stressed regions, the siting of data centres creates direct competition with agricultural and residential water needs — a competition in which corporations almost always prevail.</p>
+      </div>
+
+      <div class="article-card">
+        <h3>Electronic Waste and Rare Earth Extraction</h3>
+        <p>The hardware demands of AI — specialised graphics processors, custom silicon, and rapidly cycling server infrastructure — are driving an acceleration of electronic waste. The rare earth materials required for this hardware are extracted under conditions that cause severe environmental degradation and, in many cases, serious human rights violations. The environmental cost of AI is not confined to electricity bills; it is written into the landscapes and communities where its physical substrate is sourced.</p>
+        <ul>
+          <li>GPU replacement cycles far shorter than conventional IT hardware</li>
+          <li>Rare earth mining causes irreversible ecological damage</li>
+          <li>E-waste from AI hardware is projected to grow faster than recycling capacity</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>✠ Digital Crusade</h3>
+        <p>A global movement defending human creativity, dignity, and intelligence.</p>
+        <div class="newsletter-row">
+          <input type="email" placeholder="your@email.com" />
+          <button>Subscribe</button>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a onclick="showPage('home')">Home</a></li>
+          <li><a onclick="showPage('portfolio')">Portfolio</a></li>
+          <li><a onclick="showPage('fightback')">How We Fight Back</a></li>
+          <li><a onclick="showPage('news')">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <div class="social-links">
+          <a>𝕏</a><a>f</a><a>◉</a><a>▶</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Digital Crusade.</span>
+      <span class="footer-motto">✠ Human Intelligence First ✠</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     HOW WE FIGHT BACK PAGE
+══════════════════════════════════════ -->
+<div id="page-fightback" class="page">
+  <div class="page-header" data-label="Our Methods">
+    <h2 class="page-title">How We Fight Back</h2>
+    <p class="page-subtitle">Organised, principled, and relentless — our resistance takes many forms.</p>
+  </div>
+
+  <div class="fightback-container">
+    <div class="section-title">Public Education</div>
+    <div class="fightback-grid">
+      <div class="fightback-card">
+        <h3>Workshops & Lectures</h3>
+        <ul>
+          <li>Community workshops on AI literacy</li>
+          <li>School presentations for students aged 10–18</li>
+          <li>Public lectures at libraries and civic centres</li>
+          <li>Free downloadable educational materials</li>
+          <li>Teacher training programmes</li>
+        </ul>
+      </div>
+      <div class="fightback-card">
+        <h3>Digital Literacy</h3>
+        <ul>
+          <li>How AI systems actually work — demystified</li>
+          <li>Recognising and resisting AI-generated misinformation</li>
+          <li>Understanding and protecting your privacy</li>
+          <li>Why human-created work has irreplaceable value</li>
+          <li>Tools for critical evaluation of AI outputs</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:3rem">Political Action</div>
+    <div class="fightback-grid">
+      <div class="fightback-card">
+        <h3>Legislative Advocacy</h3>
+        <ul>
+          <li>Transparency and disclosure requirements for AI systems</li>
+          <li>Stronger regulation of automated decision-making</li>
+          <li>Mandatory human oversight in high-stakes domains</li>
+          <li>Restrictions on monopolistic data accumulation</li>
+          <li>International coordination on AI governance</li>
+        </ul>
+      </div>
+      <div class="fightback-card">
+        <h3>Economic Measures</h3>
+        <ul>
+          <li>Fair taxation of large AI corporations</li>
+          <li>Levies on AI-generated content at scale</li>
+          <li>Compensation frameworks for data and creative work used to train AI</li>
+          <li>Investment in human education and vocational training</li>
+          <li>Support for independent creators and small businesses</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section-title" style="margin-top:3rem">Awareness Campaigns</div>
+    <div class="fightback-grid">
+      <div class="fightback-card">
+        <h3>Public Demonstrations</h3>
+        <ul>
+          <li>Organised marches and rallies in major cities</li>
+          <li>Vigils outside AI company headquarters</li>
+          <li>Symbolic protests at tech conferences</li>
+          <li>International day of action coordination</li>
+        </ul>
+      </div>
+      <div class="fightback-card">
+        <h3>Media & Communications</h3>
+        <ul>
+          <li>Op-eds and investigative journalism partnerships</li>
+          <li>Documentary filmmaking and distribution</li>
+          <li>Social media campaigns with original human-made content</li>
+          <li>Podcast series on the human cost of AI</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="quote-block" style="margin-top:3rem">
+      "The opposite of artificial intelligence is not ignorance — it is wisdom. And wisdom cannot be automated."
+      <cite>— Digital Crusade, How We Fight Back Statement</cite>
+    </div>
+
+    <div style="text-align:center; margin-top:3rem">
+      <button class="btn btn-primary" onclick="showPage('donate')">Support the Fight</button>
+      &nbsp;&nbsp;
+      <button class="btn btn-outline" onclick="showPage('news')">See Our Campaigns</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>✠ Digital Crusade</h3>
+        <p>A global movement defending human creativity, dignity, and intelligence.</p>
+        <div class="newsletter-row">
+          <input type="email" placeholder="your@email.com" />
+          <button>Subscribe</button>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a onclick="showPage('home')">Home</a></li>
+          <li><a onclick="showPage('portfolio')">Portfolio</a></li>
+          <li><a onclick="showPage('fightback')">How We Fight Back</a></li>
+          <li><a onclick="showPage('news')">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <div class="social-links">
+          <a>𝕏</a><a>f</a><a>◉</a><a>▶</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Digital Crusade.</span>
+      <span class="footer-motto">✠ Human Intelligence First ✠</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     NEWS PAGE
+══════════════════════════════════════ -->
+<div id="page-news" class="page">
+  <div class="page-header" data-label="Latest Dispatches">
+    <h2 class="page-title">News & Campaigns</h2>
+    <p class="page-subtitle">Reports from the front lines of the resistance.</p>
+  </div>
+
+  <div class="news-container">
+    <div class="news-grid">
+      <div class="news-main">
+        <article>
+          <span class="news-tag">Campaign Report</span>
+          <h3>Mass Walkout at European AI Summit Draws International Coverage</h3>
+          <div class="news-meta">12 November 2024 &nbsp;|&nbsp; Brussels, Belgium</div>
+          <p>Over two thousand activists, academics, and workers staged a coordinated walkout during the opening session of the European AI Governance Summit, carrying banners reading "Human Judgment Cannot Be Automated" and "Our Data, Our Lives." The action drew live coverage from fifteen major broadcasters and forced an emergency session on labour protections into the conference agenda.</p>
+        </article>
+
+        <article>
+          <span class="news-tag">Investigation</span>
+          <h3>Exclusive: Major AI Laboratory Consuming Water at Rate of 50,000 Households</h3>
+          <div class="news-meta">4 November 2024 &nbsp;|&nbsp; Digital Crusade Investigations</div>
+          <p>A Digital Crusade investigation, drawing on utility filings and satellite imagery, has revealed that a leading AI research facility in the American Southwest is consuming water at a rate equivalent to the daily usage of fifty thousand households. The facility sits in a region classified as facing extreme drought risk. Local agricultural communities report pressure on water allocations they depend upon for their livelihoods.</p>
+        </article>
+
+        <article>
+          <span class="news-tag">Education</span>
+          <h3>Schools Outreach Programme Reaches 40,000 Students Across Eight Countries</h3>
+          <div class="news-meta">28 October 2024 &nbsp;|&nbsp; Global</div>
+          <p>Our volunteer-led schools programme has now reached forty thousand secondary school students with its curriculum on critical thinking, digital literacy, and the risks of AI dependency in education. Participating schools report measurable increases in student confidence in independent research and a marked decline in AI tool use for assessed work.</p>
+        </article>
+
+        <article>
+          <span class="news-tag">Policy</span>
+          <h3>Digital Crusade Brief Cited in European Parliament AI Act Debate</h3>
+          <div class="news-meta">19 October 2024 &nbsp;|&nbsp; Strasbourg</div>
+          <p>Our policy brief on automated decision-making and human dignity was formally cited in three separate contributions to the European Parliament debate on amendments to the AI Act. MEPs from four political groups referenced our data on employment displacement and called for stricter requirements on human oversight in consequential AI systems.</p>
+        </article>
+
+        <article>
+          <span class="news-tag">Community</span>
+          <h3>Community Forums in Twelve Cities Discuss AI's Impact on Local Economies</h3>
+          <div class="news-meta">7 October 2024 &nbsp;|&nbsp; Multiple Locations</div>
+          <p>Simultaneous community discussion forums held across twelve cities on three continents brought together workers, small business owners, artists, and educators to share experiences of AI's economic impact. The forums produced a joint declaration calling on local governments to establish human employment protection charters and to resist incentives offered by AI companies for favourable regulatory treatment.</p>
+        </article>
+      </div>
+
+      <div class="news-sidebar">
+        <div class="sidebar-section">
+          <h4>Upcoming Events</h4>
+          <div class="sidebar-item">
+            Global Day of Action — AI Accountability March
+            <span class="date">15 December 2024</span>
+          </div>
+          <div class="sidebar-item">
+            Workshop: Recognising AI Misinformation
+            <span class="date">22 November 2024 · Online</span>
+          </div>
+          <div class="sidebar-item">
+            Conference: Human Work in the Age of Automation
+            <span class="date">30 November 2024 · Berlin</span>
+          </div>
+          <div class="sidebar-item">
+            Public Lecture: Faith, Ethics, and the Algorithm
+            <span class="date">8 December 2024 · Rome</span>
+          </div>
+          <div class="sidebar-item">
+            Schools Outreach Training Day
+            <span class="date">10 December 2024 · London</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h4>Active Campaigns</h4>
+          <div class="sidebar-item">
+            Water Rights vs. Data Centres Initiative
+            <span class="date">Ongoing · 23 regions</span>
+          </div>
+          <div class="sidebar-item">
+            Artists' Compensation Coalition
+            <span class="date">Ongoing · 14,000 signatories</span>
+          </div>
+          <div class="sidebar-item">
+            Schools AI-Free Pledge
+            <span class="date">Ongoing · 312 schools</span>
+          </div>
+          <div class="sidebar-item">
+            Human Oversight Legislation Drive
+            <span class="date">Ongoing · 8 parliaments</span>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h4>By the Numbers</h4>
+          <div class="sidebar-item">
+            Volunteers Worldwide
+            <span class="date">12,400 active members</span>
+          </div>
+          <div class="sidebar-item">
+            Countries with Chapters
+            <span class="date">34 nations</span>
+          </div>
+          <div class="sidebar-item">
+            Students Reached
+            <span class="date">40,000 this year</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>✠ Digital Crusade</h3>
+        <p>A global movement defending human creativity, dignity, and intelligence.</p>
+        <div class="newsletter-row">
+          <input type="email" placeholder="your@email.com" />
+          <button>Subscribe</button>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a onclick="showPage('home')">Home</a></li>
+          <li><a onclick="showPage('portfolio')">Portfolio</a></li>
+          <li><a onclick="showPage('fightback')">How We Fight Back</a></li>
+          <li><a onclick="showPage('news')">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <div class="social-links">
+          <a>𝕏</a><a>f</a><a>◉</a><a>▶</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Digital Crusade.</span>
+      <span class="footer-motto">✠ Human Intelligence First ✠</span>
+    </div>
+  </footer>
+</div>
+
+<!-- ══════════════════════════════════════
+     DONATE PAGE (404 Error)
+══════════════════════════════════════ -->
+<div id="page-donate" class="page">
+  <div class="donate-page">
+    <div class="error-code">404</div>
+    <h2 class="error-title">Donation System Currently Unavailable</h2>
+    <div class="error-subtitle">
+      <span style="font-family:var(--mono);font-size:0.7rem;letter-spacing:0.2em">ERROR: AUTOMATION_REFUSED · STATUS: DELIGHTFULLY OFFLINE</span>
+    </div>
+    <p class="error-humor">"Even our donation system refuses to be automated."<br><br>Our donation portal is currently being managed entirely by humans — by hand, with ink, and in full defiance of algorithmic efficiency. It will return when it's good and ready.</p>
+    <div style="margin-top:2.5rem; display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;">
+      <button class="btn btn-outline" onclick="showPage('home')">Return Home</button>
+      <button class="btn btn-ghost" onclick="showPage('fightback')">Support the Movement</button>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <h3>✠ Digital Crusade</h3>
+        <p>A global movement defending human creativity, dignity, and intelligence.</p>
+        <div class="newsletter-row">
+          <input type="email" placeholder="your@email.com" />
+          <button>Subscribe</button>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Navigate</h4>
+        <ul>
+          <li><a onclick="showPage('home')">Home</a></li>
+          <li><a onclick="showPage('portfolio')">Portfolio</a></li>
+          <li><a onclick="showPage('fightback')">How We Fight Back</a></li>
+          <li><a onclick="showPage('news')">News</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Connect</h4>
+        <div class="social-links">
+          <a>𝕏</a><a>f</a><a>◉</a><a>▶</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2024 Digital Crusade.</span>
+      <span class="footer-motto">✠ Human Intelligence First ✠</span>
+    </div>
+  </footer>
+</div>
+
+<script>
+  function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-links a').forEach(a => a.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    const navLink = document.getElementById('nav-' + id);
+    if (navLink) navLink.classList.add('active');
+    window.scrollTo(0, 0);
+    // close mobile menu
+    document.getElementById('navLinks').classList.remove('open');
+    return false;
+  }
+
+  function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById('tab-' + id).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+
+  // Prevent default on all internal links
+  document.querySelectorAll('a[onclick]').forEach(a => {
+    a.addEventListener('click', e => e.preventDefault());
+  });
+</script>
+</body>
+</html>
